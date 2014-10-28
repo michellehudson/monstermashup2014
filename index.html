@@ -64,7 +64,7 @@
 								</header>
 								<p>The devil has been a popular theme of modern music since Robert Johnson sold his soul to him in the 1930s. 
 In the late 1980s and early 1990s, a moral panic concerning Satanism and alleged Satanism-related crimes swept the United States.
-In this poorly-methodologized example purely for entertainment purposes which in no way bears resemblance to actual rigorous research, I will get a data set into shape using Open Refine to see whether the spike in Satanic Panic correlates with a spike in music about the devil.
+In this poorly-methodologized example purely for entertainment purposes which in no way bears resemblance to actual rigorous research, I will get a data set into shape using Open Refine to see whether an increase in Satanic Panic correlates with an increase in music about the devil.
 </p>
 							</div>
 						</section>
@@ -80,7 +80,7 @@ In this poorly-methodologized example purely for entertainment purposes which in
 								<p>We have to find a data set that will help me do my analysis. The <a href="">Million Song Dataset</a> contains a million songs from 1930 to 2011. You can read more about the methodology of gathering these songs and their metadata at the data set's <a href="">documentation page</a>.</p>
 								
 								<h4>the data?</h4>
-								<p>One key bit of information I found when looking through the MSD documentation: they only have year metadata for about half the tracks, and they make this available in an <a href="">additional data file that’s just a text file</a>. This is bad because it’s fewer data points to work with for my analysis, but good because I don’t have to learn a new data format and processing method to be able to use the data.</p>
+								<p>One key bit of information I found when looking through the MSD documentation: they only have year metadata for about half the tracks, and they make this available in an <a href="http://labrosa.ee.columbia.edu/millionsong/sites/default/files/AdditionalFiles/tracks_per_year.txt">additional data file that’s just a text file</a>. This is bad because it’s fewer data points to work with for my analysis, but good because I don’t have to learn a new data format and processing method to be able to use the data.</p>
 								
 								<h4>what now?</h4>
 								<p>The rest of this tutorial will walk you through important steps to process this huge data set and get it ready for analysis:</p>
@@ -102,67 +102,100 @@ In this poorly-methodologized example purely for entertainment purposes which in
 								<h3>discern the transmundane (or: transform the data)</h3>
 								<div class="features">
 									<article>
-										<a href="#" class="image"><img src="images/pic01.jpg" alt="" /></a>
+										<a href="images/ingest_url.png" class="image"><img src="images/ingest_url.png" alt="" /></a>
 										<div class="inner">
 											<h4>ingest the data</h4>
-											<p>We can load the dataset into Open Refine straight from the URL we found, just paste it into the box!</p>
-											
-											<p>Curiously, from this screen, Refine only wants to let you have one character as a separator. This dataset uses a strange separator, so let's just leave everything in one column for now.</p>
-											
-											<p>Make sure to check the options for ingest thoroughly -- for this data set, we don't want to split columns that contain a " (that will break everything!) and we have no headers.</p>
+											<p>We can load the dataset into Open Refine straight from the <a href="http://labrosa.ee.columbia.edu/millionsong/sites/default/files/AdditionalFiles/tracks_per_year.txt">URL we found</a>, just click on "Web Addresses (URLs), and paste it into the box!</p>
 										</div>
-										
+										<a href="images/ingest_options.png" class="image"><img src="images/ingest_options.png" alt="" /></a>
+										<div class="inner">
+											<p>Curiously, from this screen, Refine only wants to let you have one character as a separator. This dataset uses a strange separator, so let's just leave everything in one column for now by clicking "custom" but leaving the box blank.</p>
+											
+											<p>Make sure to check the options for ingest thoroughly -- for this data set, we don't want to split columns that contain quotation marks(that will break everything!) and we have no headers.</p>
+										</div>
 									</article>
 									<article>
-										<a href="#" class="image"><img src="images/pic02.jpg" alt="" /></a>
+										<a href="images/column1.png" class="image"><img src="images/column1.png" alt="" /></a>
 										<div class="inner">
 											<h4>separate the columns</h4>
-											<p>write this</p>
+											<p>Now everything is ingested, but it's one big string of text in just one column. We want to isolate year, identifier, band name, and song title. This is very easy with Open Refine.</p>
+										</div>
+										<a href="images/column2.png" class="image"><img src="images/column2.png" alt="" /></a>
+										<div class="inner">
+											<p>Click the little arrow pointing down next to the column name (that's how you do operations on a single column). From there, choose Edit column --> split into several columns. HERE we have the option to put in more than one character to split the columns, so go ahead and put in SEP in brackets.</p>
 										</div>
 									</article>
 									<article>
-										<a href="#" class="image"><img src="images/pic03.jpg" alt="" /></a>
+										<a href="images/cluster.png" class="image"><img src="images/cluster.png" alt="" /></a>
 										<div class="inner">
 											<h4>merge band names</h4>
-											<p>Integer eu ante ornare amet commetus vestibulum blandit integer in curae ac faucibus integer adipiscing ornare amet.</p>
+											<p>Open Refine has a useful clustering tool that will look for items that are similar to each other and standardize their names. In this dataset, the same band is represented in a number of ways, which could impact our results. To merge artist names, select the down arrow on the column that contains band names, and select Edit cells --> Cluster and edit.</p>
+											</div>
+										<a href="images/cluster2.png" class="image"><img src="images/cluster2.png" alt="" /></a>
+										<div class="inner">
+											<p>See how many different representations of the same thing there are? I just chose "select all" because I'm pretty confident the clustering will be accurate enough for my purposes, but you can also select only a few items if you want to be more discerning. Click "Merge Selected & Recluster" to finish the operation.</p>
 										</div>
 									</article>
 									<article>
-										<a href="#" class="image"><img src="images/pic03.jpg" alt="" /></a>
+										<a href="images/transform.png" class="image"><img src="images/transform.png" alt="" /></a>
 										<div class="inner">
 											<h4>transform to lowercase</h4>
-											<p>Integer eu ante ornare amet commetus vestibulum blandit integer in curae ac faucibus integer adipiscing ornare amet.</p>
+											<p>Since my analysis of this data doesn't care whether the devil represented is the Capital-D-Devil or not, it's easier to transform all the song titles to lowercase so we can ignore case sensitivity when selecting the records we want later. You can do a lot of other useful transformations as well. Click the column's down arrow as usual, then select Edit cells --> Common transforms --> To lowercase.</p>
 										</div>
 									</article>
 									<article>
-										<a href="#" class="image"><img src="images/pic03.jpg" alt="" /></a>
-										<div class="inner">
-											<h4>de-duplicate records</h4>
-											<p>This part is tricky. The “Duplicates” facet will let you filter out duplicates, but won’t let you leave one instance of a record in. I definitely want one version of a track in my data set, but not two or three. To remove subsequent instances of duplicates, do this:</p>
-
-<p>Sort on the column that has duplicates.
-Reorder rows permanently (the blue SORT link which appears in the header)
-(this will take some time)
-Edit cells — BLANK down
-Face — customized facets — facet by blank
-All — edit rows — remove all matching rows
-— this will get rid of them so they aren’t even in the set anymore. You can undo anything at any time.
-
-</p>
+								
+										<div>
+											<h4>deduplicate records</h4>
+											<p>This part is tricky. The “duplicates” facet that comes built in with Open Refine will let you filter out duplicates, but won’t let you leave one instance of a record in. I definitely want one version of a track in my data set, but not two or three. To remove subsequent instances of duplicates, do this:</p>
+											<p>
+											<ol>
+												<li>Use the trusty down arrow on the column that has duplicates, and select "sort." Sorting by text is fine for this.</li>
+												<li>Now there appears a NEW "sort" option at the top of the main window.</li>
+												<li>Use the new sort option at the top and choose "reorder rows permanently." This may take a while. Go get another coffee.</li>
+												<li>When the rows are reordered, go back to using the down arrow on the column of interest, and choose Edit cells --> Blank down. This will turn every subsequent duplicate into a blank cell.</li>
+												<li>Now we can use facets! Click the column's down arrow --> Facet --> Customized facets --> Facet by blank.</li>
+												<li>Facets basically let you organize the whole dataset into "true for this facet" and "false for this facet." Select the facet that says true, which will show us everything that has a blank cell for our selected column.</li>
+												<li>If you want to permanently get rid of all the blank cells (duplicates), choose the down arrow that says "All" --> Edit rows --> remove all matching rows. You can use this same command to get rid of any rows you don't want. We're just using it this time to get rid of rows that used to be duplicates so we only have one copy of a song in our data set.</li>
+												<li>It may seem scary to remove data, but the undo/redo function is very useful and will let you back up as many steps as you want if you make a mistake.</li>
+											</ol>
+											</p>
 										</div>
 									</article>
 									<article>
-										<a href="#" class="image"><img src="images/pic03.jpg" alt="" /></a>
+										<a href="images/filter.png" class="image"><img src="images/filter.png" alt="" /></a>
 										<div class="inner">
 											<h4>filter on keywords</h4>
-											<p>Integer eu ante ornare amet commetus vestibulum blandit integer in curae ac faucibus integer adipiscing ornare amet.</p>
+											<p>We can now use regular expressions to find tracks that have words that match the words we're interested in. Open Refine does automatic stemming for this function, which can be good and bad. Here's my list of words:</p>
+											<p>
+											<ul>
+												<li>Satan (gets satanic, satanas, etc)</li>
+												<li>Lucifer</li>
+												<li>Beelzebub</li>
+												<li>Mephisto (gets mephistopheles)</li>
+												<li>Demon (gets demons, demonic, demonstration)</li>
+												<li>Devil (gets devils, devilish ... vaudeville)</li>
+											</ul></p>
+											</div>
+												<a href="images/filter2.png" class="image"><img src="images/filter2.png" alt="" /></a>
+										<div class="inner">
+										<p>To start finding songs of interest, click the down arrow on the column, and go to Facet --> Custom text facet. You can learn more about the <a href="">Google Refine Expression Language</a>, but we'll be using the simple function: value.contains("wordofinterest"), and just repeating it as many times as necessary. It saves all of your expressions in the "history" tab!</p>
+										</div>
+											<a href="images/filter3.png" class="image"><img src="images/filter3.png" alt="" /></a>
+										<div class="inner">
+										<p>Since this is a facet function, it'll divide the dataset into "true" and false. The image here is showing that 585 songs returned as "true" for their titles containing "devil." If I click to see only these records that returned true, I can then go to down arrow next to "All" --> Edit rows --> Star rows. This will tell Refine that I think these rows are important, and they will stay starred unless I unstar them.</p>
+										</div>
+										<a href="images/filter4.png" class="image"><img src="images/filter4.png" alt="" /></a>
+										<div class="inner">
+										<p>Run the regular expression for every term you want to find, and star all the rows along the way just like in the step above. When you've got everything you want, go to All --> Facet by star. The rows that return as starred are your carefully curated subset of data! Congratulations!</p>
+
 										</div>
 									</article>
 									<article>
-										<a href="#" class="image"><img src="images/pic03.jpg" alt="" /></a>
+										<a href="images/export.png" class="image"><img src="images/export.png" alt="" /></a>
 										<div class="inner">
 											<h4>export the data</h4>
-											<p>Integer eu ante ornare amet commetus vestibulum blandit integer in curae ac faucibus integer adipiscing ornare amet.</p>
+											<p>Exporting data is simple. Make sure you only have the rows that you're interested in selected (in this case, the starred ones), and go to "Export" at the top of the page. Download it in any format you want to work with it in.</p>
 										</div>
 									</article>
 									
@@ -178,7 +211,21 @@ All — edit rows — remove all matching rows
 								<p>Now that we have just ~900 rows instead of over 500,000, Excel easily handles the data set.</p>
 								
 								<h4>findings</h4>
-								<p>findings</p>
+								<p>I made a <a href="demons_by_year.xlsx">spreadsheet</a> and broke down the songs per year and percentage of those songs per year that included my criteria for the devil.</p> 
+								
+									<span class="image fit"><img src="images/demonchart.png" alt="" /></span>
+								
+								<p>As you can see, the percentages over time are fairly stable (discounting 1931, which has a sample size too small to be valid), the years in which songs that have titles referencing the devil make up more than 0.50% of total songs in the dataset for that year are: 
+								<ul>
+								<li>1972 (.55%)</li>
+								<li>2010 (.55%)</li>
+								<li>1956 (.61%)</li>
+								<li>1960 (.74%)</li>
+								<li>1955 (1.19%)</li>
+								</ul>
+								</p>
+								
+								<p>One particularly salient finding is that the Swedish black metal band <a href="http://en.wikipedia.org/wiki/Dark_Funeral">Dark Funeral</a>, noted practitioners of LaVeyan Satanism, have the most songs in the dataset, at 9.</p> 
 								
 								<h4>celebrate!</h4>
 								<p>I wouldn’t lead you through all this great music without leaving you with a playlist of my favorite songs about ((satan OR lucifer) OR (demon OR demons) OR (hell OR evil)). You can play the playlist on <a href="">Spotify</a>.</p>
